@@ -34,6 +34,8 @@ void centerText(int bufferSize, string symbol, string text){ //? to have a more 
     for(int j = 0; j<=bufferSize - text.length() / 2; j++){
         cout << symbol;
     }
+
+    cout << endl;
     
 }
 
