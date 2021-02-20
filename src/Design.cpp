@@ -18,7 +18,16 @@ int getScreenSize(){ //? to get the screen size
     return windowSize;
 }
 
-void indentText(int bufferSize, string symbol){ //? half version of the center function
+string indentText(int bufferSize, string symbol){ //? half version of the center function
+    string textDisplay; 
+    for(int j = 0; j<=bufferSize; j++){
+        textDisplay += symbol;
+    }
+
+    return textDisplay;
+}
+
+void addSpace(int bufferSize, string symbol){ //? half version of the center function
     for(int j = 0; j<=bufferSize; j++){
         cout << symbol;
     }
@@ -48,7 +57,7 @@ void displayConsoleName(string title, string symbol){
 
 void inputHere(){
     int size = getScreenSize();
-    indentText(size / 2, " ");
+    addSpace(size / 2, " ");
     cout <<"-> ";
 }
 
@@ -56,7 +65,7 @@ void loadData(){
     int size = getScreenSize();
 
     cout << endl;
-    indentText(size / 2, " ");
+    addSpace(size / 2, " ");
     Sleep(500);
     cout << ".";
     Sleep(500);
