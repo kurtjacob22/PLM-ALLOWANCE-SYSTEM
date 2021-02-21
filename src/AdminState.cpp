@@ -67,7 +67,9 @@ class AdminState{
                 centerText(windowSize / 2, " ", "3.VIEW ALL ACCOUNT HOLDER LIST");
                 centerText(windowSize / 2, " ", "4.MODIFY AN ACCOUNT");
                 centerText(windowSize / 2, " ", "5.ARCHIVE");
-                centerText(windowSize / 2, " ", "6.EXIT");
+                centerText(windowSize / 2, " ", "6.ADD CASH TO ALL STUDENTS");
+                centerText(windowSize / 2, " ", "7.VIEW ARCHIVE LIST");
+                centerText(windowSize / 2, " ", "8.EXIT");
                 cout << endl;
                 centerText(windowSize / 2, " ", "Select Option");
                 inputHere();
@@ -80,10 +82,23 @@ class AdminState{
                     balanceInquiry();
                     break;
                 }else if(optMenu == 3){
-                    viewAllAccounts();
+                    viewAllAccounts("");
                     break;
                 }else if(optMenu == 4){
                     modifyAccount();
+                    break;
+                }else if(optMenu == 5){
+                    archiveAccount();
+                    break;
+                }else if(optMenu == 6){
+                    addCash();
+                    break;
+                }else if(optMenu == 7){
+                    viewAllAccounts("ArchiveList");
+                }else if(optMenu == 8){
+                    system("cls");
+                    system("exit");
+                    break;
                 }
 
             }while(true);
@@ -101,7 +116,7 @@ class AdminState{
             inputHere();
             cin >> recordCount;
 
-            fstream studentNumFile, studentNameFile, studentAddressFile, studentPhoneNumberFile, studentCourseFile, studentSectionFile, dateEnrolledFile, birthdayFile, amountFile;
+            fstream studentNumFile, studentNameFile, studentAddressFile, studentPhoneNumberFile, studentCourseFile, studentSectionFile, dateEnrolledFile, birthdayFile, amountFile, passwordFile;
             studentNumFile.open(".\\src\\Database\\student_number.dat", ios::in | ios::out | ios::app);
             studentNameFile.open(".\\src\\Database\\student_name.dat", ios::in | ios::out | ios::app);
             studentAddressFile.open(".\\src\\Database\\student_address.dat", ios::in | ios::out | ios::app);
@@ -111,6 +126,7 @@ class AdminState{
             dateEnrolledFile.open(".\\src\\Database\\student_date_enrolled.dat", ios::in | ios::out | ios::app);
             birthdayFile.open(".\\src\\Database\\student_birthday.dat", ios::in | ios::out | ios::app);
             amountFile.open(".\\src\\Database\\student_balance.dat", ios::in | ios::out | ios::app);
+            passwordFile.open(".\\src\\Database\\password.dat", ios::in | ios::out | ios::app);
 
             cin.ignore();
             cin.sync();
@@ -129,6 +145,7 @@ class AdminState{
 
                 }while(stdId == "" || checkIfValidUser == true);
                 studentNumFile << stdId << endl;
+                passwordFile << stdId << endl;
 
                 // ! student full name
                 string stdName;
@@ -282,24 +299,36 @@ class AdminState{
             adminMenu("BackToMenu");
         }
 
-        void viewAllAccounts(){
+        void viewAllAccounts(string type){
             cin.ignore();
             cin.sync();
             int windowSize = getScreenSize();//-> constant number depending on the length of your Console
 
             header();
             centerText(windowSize / 2, " ", "Student Accounts");
-
             fstream studentNumFile, studentNameFile, studentAddressFile, studentPhoneNumberFile, studentCourseFile, studentSectionFile, dateEnrolledFile, birthdayFile, amountFile;
-            studentNumFile.open(".\\src\\Database\\student_number.dat", ios::in | ios::out | ios::app);
-            studentNameFile.open(".\\src\\Database\\student_name.dat", ios::in | ios::out | ios::app);
-            studentAddressFile.open(".\\src\\Database\\student_address.dat", ios::in | ios::out | ios::app);
-            studentPhoneNumberFile.open(".\\src\\Database\\student_phone_number.dat", ios::in | ios::out | ios::app);
-            studentCourseFile.open(".\\src\\Database\\student_course.dat", ios::in | ios::out | ios::app);
-            studentSectionFile.open(".\\src\\Database\\student_section.dat", ios::in | ios::out | ios::app);
-            dateEnrolledFile.open(".\\src\\Database\\student_date_enrolled.dat", ios::in | ios::out | ios::app);
-            birthdayFile.open(".\\src\\Database\\student_birthday.dat", ios::in | ios::out | ios::app);
-            amountFile.open(".\\src\\Database\\student_balance.dat", ios::in | ios::out | ios::app);
+
+            if(type == "ArchiveList"){
+                studentNumFile.open(".\\src\\Database\\archive\\archive_student_number.dat", ios::in | ios::out | ios::app);
+                studentNameFile.open(".\\src\\Database\\archive\\archive_student_name.dat", ios::in | ios::out | ios::app);
+                studentAddressFile.open(".\\src\\Database\\archive\\archive_student_address.dat", ios::in | ios::out | ios::app);
+                studentPhoneNumberFile.open(".\\src\\Database\\archive\\archive_student_phone_number.dat", ios::in | ios::out | ios::app);
+                studentCourseFile.open(".\\src\\Database\\archive\\archive_student_course.dat", ios::in | ios::out | ios::app);
+                studentSectionFile.open(".\\src\\Database\\archive\\archive_student_section.dat", ios::in | ios::out | ios::app);
+                dateEnrolledFile.open(".\\src\\Database\\archive\\archive_student_date_enrolled.dat", ios::in | ios::out | ios::app);
+                birthdayFile.open(".\\src\\Database\\archive\\archive_student_birthday.dat", ios::in | ios::out | ios::app);
+                amountFile.open(".\\src\\Database\\archive\\archive_student_balance.dat", ios::in | ios::out | ios::app);
+            }else{
+                studentNumFile.open(".\\src\\Database\\student_number.dat", ios::in | ios::out | ios::app);
+                studentNameFile.open(".\\src\\Database\\student_name.dat", ios::in | ios::out | ios::app);
+                studentAddressFile.open(".\\src\\Database\\student_address.dat", ios::in | ios::out | ios::app);
+                studentPhoneNumberFile.open(".\\src\\Database\\student_phone_number.dat", ios::in | ios::out | ios::app);
+                studentCourseFile.open(".\\src\\Database\\student_course.dat", ios::in | ios::out | ios::app);
+                studentSectionFile.open(".\\src\\Database\\student_section.dat", ios::in | ios::out | ios::app);
+                dateEnrolledFile.open(".\\src\\Database\\student_date_enrolled.dat", ios::in | ios::out | ios::app);
+                birthdayFile.open(".\\src\\Database\\student_birthday.dat", ios::in | ios::out | ios::app);
+                amountFile.open(".\\src\\Database\\student_balance.dat", ios::in | ios::out | ios::app);
+            }
 
             vector<string> studentNumber, studentName, studentAddress, studentPhoneNumber, studentCourse, studentSection, studentEnrolledDate, studentBirthday, studentBalance;
             int buff = 20;
@@ -380,7 +409,7 @@ class AdminState{
             cin.sync();
 
             int windowSize = getScreenSize();//-> constant number depending on the length of your Console
-            fstream studentNumFile, studentNameFile, studentAddressFile, studentPhoneNumberFile, studentCourseFile, studentSectionFile, dateEnrolledFile, birthdayFile, amountFile;
+            fstream studentNumFile, studentNameFile, studentAddressFile, studentPhoneNumberFile, studentCourseFile, studentSectionFile, dateEnrolledFile, birthdayFile, amountFile, passwordFile;
             studentNumFile.open(".\\src\\Database\\student_number.dat", ios::in | ios::out | ios::app);
             studentNameFile.open(".\\src\\Database\\student_name.dat", ios::in | ios::out | ios::app);
             studentAddressFile.open(".\\src\\Database\\student_address.dat", ios::in | ios::out | ios::app);
@@ -390,8 +419,9 @@ class AdminState{
             dateEnrolledFile.open(".\\src\\Database\\student_date_enrolled.dat", ios::in | ios::out | ios::app);
             birthdayFile.open(".\\src\\Database\\student_birthday.dat", ios::in | ios::out | ios::app);
             amountFile.open(".\\src\\Database\\student_balance.dat", ios::in | ios::out | ios::app);
+            passwordFile.open(".\\src\\Database\\password.dat", ios::in | ios::out | ios::app);
 
-            vector<string> studentNumber, studentName, studentAddress, studentPhoneNumber, studentCourse, studentSection, studentEnrolledDate, studentBirthday, studentBalance;
+            vector<string> studentNumber, studentName, studentAddress, studentPhoneNumber, studentCourse, studentSection, studentEnrolledDate, studentBirthday, studentBalance, studentPassword;
 
             string input;
             while(getline(studentNumFile, input)){
@@ -421,6 +451,10 @@ class AdminState{
             while(getline(amountFile, input)){
                 studentBalance.push_back(input);
             }
+            while(getline(passwordFile, input)){
+                studentPassword.push_back(input);
+            }
+
 
             studentNumFile.close();
             studentNameFile.close();
@@ -431,6 +465,7 @@ class AdminState{
             dateEnrolledFile.close();
             birthdayFile.close();
             amountFile.close();
+            passwordFile.close();
 
             // ! start part
             string stdInput;
@@ -446,6 +481,7 @@ class AdminState{
                 centerText(windowSize / 2, " ", "Here's The Data");
                 cout << endl;
                 centerText(windowSize / 2, " ", "Student Number: " + studentNumber[index]);
+                centerText(windowSize / 2, " ", "Password: " + studentPassword[index]);
                 centerText(windowSize / 2, " ", "Student Name: " + studentName[index]);
                 centerText(windowSize / 2, " ", "Email Address: " + studentAddress[index]);
                 centerText(windowSize / 2, " ", "Phone Number: " + studentPhoneNumber[index]);
@@ -459,6 +495,7 @@ class AdminState{
                 string editData;
                 centerText(windowSize / 2, " ", "Leave it blank if you don't wish to modify it");
                 changeData(index, editData, studentNumber, ".\\src\\Database\\student_number.dat", "Change Student Number into: ");
+                changeData(index, editData, studentPassword, ".\\src\\Database\\password.dat", "Change Password into: ");
                 changeData(index, editData, studentName, ".\\src\\Database\\student_name.dat", "Change Student Name into: ");
                 changeData(index, editData, studentAddress, ".\\src\\Database\\student_address.dat", "Change Email Address into: ");
                 changeData(index, editData, studentPhoneNumber, ".\\src\\Database\\student_phone_number.dat", "Change Phone Number into: ");
@@ -469,15 +506,227 @@ class AdminState{
                 changeData(index, editData, studentBalance, ".\\src\\Database\\student_balance.dat", "Change Balance into: ");
 
                 centerText(windowSize / 2, " ", "Done Editing!");
-                
-
-
 
             }else{ //? not exists
                 header();
                 centerText(windowSize / 2, " ", "STUDENT NOT FOUND");
             }
 
+            system("pause");
+            adminMenu("BackToMenu");
+
+        }
+
+        void archiveAccount(){
+            
+
+            int windowSize = getScreenSize();//-> constant number depending on the length of your Console   
+            
+            fstream studentNumFile, studentNameFile, studentAddressFile, studentPhoneNumberFile, studentCourseFile, studentSectionFile, dateEnrolledFile, birthdayFile, amountFile, passwordFile;
+            studentNumFile.open(".\\src\\Database\\student_number.dat", ios::in | ios::out | ios::app);
+            studentNameFile.open(".\\src\\Database\\student_name.dat", ios::in | ios::out | ios::app);
+            studentAddressFile.open(".\\src\\Database\\student_address.dat", ios::in | ios::out | ios::app);
+            studentPhoneNumberFile.open(".\\src\\Database\\student_phone_number.dat", ios::in | ios::out | ios::app);
+            studentCourseFile.open(".\\src\\Database\\student_course.dat", ios::in | ios::out | ios::app);
+            studentSectionFile.open(".\\src\\Database\\student_section.dat", ios::in | ios::out | ios::app);
+            dateEnrolledFile.open(".\\src\\Database\\student_date_enrolled.dat", ios::in | ios::out | ios::app);
+            birthdayFile.open(".\\src\\Database\\student_birthday.dat", ios::in | ios::out | ios::app);
+            amountFile.open(".\\src\\Database\\student_balance.dat", ios::in | ios::out | ios::app);
+            passwordFile.open(".\\src\\Database\\password.dat", ios::in | ios::out | ios::app);
+
+            vector<string> studentNumber, studentName, studentAddress, studentPhoneNumber, studentCourse, studentSection, studentEnrolledDate, studentBirthday, studentBalance, studentPassword;
+
+            string input;
+            while(getline(studentNumFile, input)){
+                studentNumber.push_back(input);
+            }
+            while(getline(studentNameFile, input)){
+                studentName.push_back(input);
+            }
+            while(getline(studentAddressFile, input)){
+                studentAddress.push_back(input);
+            }
+            while(getline(studentPhoneNumberFile, input)){
+                studentPhoneNumber.push_back(input);
+            }
+            while(getline(studentCourseFile, input)){
+                studentCourse.push_back(input);
+            }
+            while(getline(studentSectionFile, input)){
+                studentSection.push_back(input);
+            }
+            while(getline(dateEnrolledFile, input)){
+                studentEnrolledDate.push_back(input);
+            }
+            while(getline(birthdayFile, input)){
+                studentBirthday.push_back(input);
+            }
+            while(getline(amountFile, input)){
+                studentBalance.push_back(input);
+            }
+            while(getline(passwordFile, input)){
+                studentPassword.push_back(input);
+            }
+
+
+            studentNumFile.close();
+            studentNameFile.close();
+            studentAddressFile.close();
+            studentPhoneNumberFile.close();
+            studentCourseFile.close();
+            studentSectionFile.close();
+            dateEnrolledFile.close();
+            birthdayFile.close();
+            amountFile.close();
+            passwordFile.close();
+
+            cin.ignore();
+            cin.sync();
+
+            string stdId;
+            header();
+            centerText(windowSize / 2, " ", "Enter Student Number");
+            inputHere();
+            getline(cin, stdId);
+
+            //check if user exists
+            int index = getVectorIndex(stdId, studentNumber);
+            if(index != -1){//! if user exists
+                header();
+                centerText(windowSize / 2, " ", "Here's The User's Data");
+                cout << endl;
+                centerText(windowSize / 2, " ", "Student Number: " + studentNumber[index]);
+                centerText(windowSize / 2, " ", "Password: " + studentPassword[index]);
+                centerText(windowSize / 2, " ", "Student Name: " + studentName[index]);
+                centerText(windowSize / 2, " ", "Email Address: " + studentAddress[index]);
+                centerText(windowSize / 2, " ", "Phone Number: " + studentPhoneNumber[index]);
+                centerText(windowSize / 2, " ", "Course: " + studentCourse[index]);
+                centerText(windowSize / 2, " ", "Section: " + studentSection[index]);
+                centerText(windowSize / 2, " ", "Enrolled Date: " + studentEnrolledDate[index]);
+                centerText(windowSize / 2, " ", "Birthday: " + studentBirthday[index]);
+                centerText(windowSize / 2, " ", "Balance: " + studentBalance[index]);
+                centerText(windowSize / 2, " ", "Are you sure you want to send this account to archive?(Y|N)");
+                string archiveQ;
+                inputHere();
+                getline(cin, archiveQ);
+                if(archiveQ == "Y" || archiveQ == "y"){
+                    //? Sending to archive list
+                    fstream archive_studentNumFile, archive_studentNameFile, archive_studentAddressFile, archive_studentPhoneNumberFile, archive_studentCourseFile, archive_studentSectionFile, archive_dateEnrolledFile, archive_birthdayFile, archive_amountFile, archive_passwordFile;
+
+                    archive_studentNumFile.open(".\\src\\Database\\archive\\archive_student_number.dat", ios::in | ios::out | ios::app);
+                    archive_studentNameFile.open(".\\src\\Database\\archive\\archive_student_name.dat", ios::in | ios::out | ios::app);
+                    archive_studentAddressFile.open(".\\src\\Database\\archive\\archive_student_address.dat", ios::in | ios::out | ios::app);
+                    archive_studentPhoneNumberFile.open(".\\src\\Database\\archive\\archive_student_phone_number.dat", ios::in | ios::out | ios::app);
+                    archive_studentCourseFile.open(".\\src\\Database\\archive\\archive_student_course.dat", ios::in | ios::out | ios::app);
+                    archive_studentSectionFile.open(".\\src\\Database\\archive\\archive_student_section.dat", ios::in | ios::out | ios::app);
+                    archive_dateEnrolledFile.open(".\\src\\Database\\archive\\archive_student_date_enrolled.dat", ios::in | ios::out | ios::app);
+                    archive_birthdayFile.open(".\\src\\Database\\archive\\archive_student_birthday.dat", ios::in | ios::out | ios::app);
+                    archive_amountFile.open(".\\src\\Database\\archive\\archive_student_balance.dat", ios::in | ios::out | ios::app);
+                    archive_passwordFile.open(".\\src\\Database\\archive\\archive_password.dat", ios::in | ios::out | ios::app);
+
+                    archive_studentNumFile << studentNumber[index] << endl;
+                    archive_studentNameFile << studentName[index] << endl;
+                    archive_studentAddressFile << studentAddress[index] << endl;
+                    archive_studentPhoneNumberFile << studentPhoneNumber[index] << endl;
+                    archive_studentCourseFile << studentCourse[index] << endl;
+                    archive_studentSectionFile << studentSection[index] << endl;
+                    archive_dateEnrolledFile <<studentEnrolledDate[index] << endl;
+                    archive_birthdayFile << studentBirthday[index] << endl;
+                    archive_amountFile << studentBalance[index] << endl;
+                    archive_passwordFile << studentPassword[index] << endl;
+
+                    archive_studentNumFile.close();
+                    archive_studentNameFile.close();
+                    archive_studentAddressFile.close();
+                    archive_studentPhoneNumberFile.close();
+                    archive_studentCourseFile.close();
+                    archive_studentSectionFile.close();
+                    archive_dateEnrolledFile.close();
+                    archive_birthdayFile.close();
+                    archive_amountFile.close();
+                    archive_passwordFile.close();
+
+                    //! delete the archived info from student's Database
+                    removeData(index, ".\\src\\Database\\student_number.dat", studentNumber);
+                    removeData(index, ".\\src\\Database\\student_name.dat", studentName);
+                    removeData(index, ".\\src\\Database\\student_address.dat", studentAddress);
+                    removeData(index, ".\\src\\Database\\student_phone_number.dat", studentPhoneNumber);
+                    removeData(index, ".\\src\\Database\\student_course.dat", studentCourse);
+                    removeData(index, ".\\src\\Database\\student_section.dat", studentSection);
+                    removeData(index, ".\\src\\Database\\student_date_enrolled.dat", studentEnrolledDate);
+                    removeData(index, ".\\src\\Database\\student_birthday.dat", studentBirthday);
+                    removeData(index, ".\\src\\Database\\student_balance.dat", studentBalance);
+                    removeData(index, ".\\src\\Database\\password.dat", studentPassword);
+                    
+                    loadData();
+                    cout << endl;
+                    centerText(windowSize / 2, " ", "Sent To Archive List!");
+                }else{
+                    loadData();
+                    cout << endl;
+                    centerText(windowSize / 2, " ", "Failed Sending to Archive List!");
+                }
+
+                system("pause");
+            }else{
+                string msg = stdId + " is an invalid user";
+                loadData();
+                header();
+                centerText(windowSize / 2, " ", msg);
+                system("pause");
+            }
+            
+            
+
+            adminMenu("backToMenu");
+
+        }
+
+        void addCash(){
+            cin.ignore();
+            cin.sync();
+
+            int windowSize = getScreenSize();//-> constant number depending on the length of your Console
+
+            fstream balanceFile;
+            balanceFile.open(".\\src\\Database\\student_balance.dat", ios::in | ios::out | ios::app);
+
+            vector<string> studentBalance;
+            string input;
+            while(getline(balanceFile, input)){
+                studentBalance.push_back(input);
+            }
+
+            balanceFile.close();
+            int cashAmount;
+            header();
+            centerText(windowSize / 2, " ", "Enter Amount in Cash");
+            inputHere();
+            cin >> cashAmount;
+
+            int cashTemp = 0;
+            for(int i = 1; i < studentBalance.size(); i++){
+                // cashTemp[i - 1] = stoi(studentBalance[i]) + cashAmount;
+                cashTemp = stoi(studentBalance[i]) + cashAmount;
+                studentBalance[i] = to_string(cashTemp);
+            }
+
+            //! insert edited to new file
+            if( remove(".\\src\\Database\\student_balance.dat") != 0){
+                    perror("There's an error in deleting the file.");
+            }else{
+                fstream newFile(".\\src\\Database\\student_balance.dat", ios::in | ios::out | ios::app);
+                for(string i : studentBalance){
+                    newFile << i << endl;
+                }
+                newFile.close();
+            }
+            
+            
+
+            loadData();
+            cout << endl;
+            centerText(windowSize / 2, " ", "SUCCESS!");
             system("pause");
             adminMenu("BackToMenu");
 
@@ -506,6 +755,19 @@ class AdminState{
             vectorArray.erase(vectorArray.begin() + (index));
             vectorArray.push_back(editData);
 
+            if( remove(filename.c_str()) != 0){
+                    perror("There's an error in deleting the file.");
+            }else{
+                fstream newFile(filename.c_str(), ios::in | ios::out | ios::app);
+                for(string i : vectorArray){
+                    newFile << i << endl;
+                }
+                newFile.close();
+            }
+        }
+
+        void removeData(int index, string filename, vector<string> vectorArray){
+            vectorArray.erase(vectorArray.begin() + (index));//? removes specific element
             if( remove(filename.c_str()) != 0){
                     perror("There's an error in deleting the file.");
             }else{

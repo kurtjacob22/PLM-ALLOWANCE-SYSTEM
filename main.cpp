@@ -4,6 +4,7 @@
 #include "./src/CreateAccount.cpp" //? class for creating account
 #include "./src/Design.cpp" //? For Design UI
 #include "./src/AdminState.cpp" //? Admin Functions
+#include "./src/StudentState.cpp" //? Student Functions
 
 using namespace std;
 
@@ -32,7 +33,8 @@ void menu(){//start of the program -> back to menu
 
         if(optionInput == 1){
             // Student State
-            cout << "Student";
+            StudentState student;
+            student.StudentAuth("Enter Username");
             break;
         }else if(optionInput == 2){
             // Admin State
