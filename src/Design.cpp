@@ -23,7 +23,7 @@ string indentText(int bufferSize, string symbol){ //? half version of the center
     for(int j = 0; j<=bufferSize; j++){
         textDisplay += symbol;
     }
-
+    
     return textDisplay;
 }
 

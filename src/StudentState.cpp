@@ -15,7 +15,7 @@ class StudentState{
     public:
         void StudentAuth(string message){// ! TRACK INDEX
             int windowSize = getScreenSize();//-> constant number depending on the length of your Console
-
+            
             AdminState getVector;
             string userName;
             string passWord;
