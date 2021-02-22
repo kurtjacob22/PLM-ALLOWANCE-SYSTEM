@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 
-#include "./src/CreateAccount.cpp" //? class for creating account
 #include "./src/Design.cpp" //? For Design UI
 #include "./src/AdminState.cpp" //? Admin Functions
 #include "./src/StudentState.cpp" //? Student Functions

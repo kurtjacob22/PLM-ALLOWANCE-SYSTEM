@@ -3,11 +3,15 @@
 #include <vector>
 #include <fstream>
 
+// #include "./StudentState.cpp"
+
 void centerText();
 void displayConsoleName();
 void inputHere();
 int getScreenSize();
 void header();
+void studentMenu();
+void menu();
 
 class AdminState{
     public: 
@@ -70,6 +74,7 @@ class AdminState{
                 centerText(windowSize / 2, " ", "6.ADD CASH TO ALL STUDENTS");
                 centerText(windowSize / 2, " ", "7.VIEW ARCHIVE LIST");
                 centerText(windowSize / 2, " ", "8.EXIT");
+                centerText(windowSize / 2, " ", "9.LOGOUT");
                 cout << endl;
                 centerText(windowSize / 2, " ", "Select Option");
                 inputHere();
@@ -79,7 +84,7 @@ class AdminState{
                     registerAccount();
                     break;
                 }else if(optMenu == 2){
-                    balanceInquiry();
+                    balanceInquiry("ADMIN", "");
                     break;
                 }else if(optMenu == 3){
                     viewAllAccounts("");
@@ -98,6 +103,10 @@ class AdminState{
                 }else if(optMenu == 8){
                     system("cls");
                     system("exit");
+                    break;
+                }else if(optMenu == 9){
+                    loadData();
+                    menu();
                     break;
                 }
 
@@ -253,7 +262,7 @@ class AdminState{
             adminMenu("BackToMenu");
         }
 
-        void balanceInquiry(){
+        void balanceInquiry(string type, string studentNum){
             cin.ignore();
             cin.sync();
             
@@ -273,10 +282,15 @@ class AdminState{
                 accountBalance.push_back(input); // inserts data to a temporary vector
             }
 
-            header();
-            centerText(windowSize / 2, " ", "Enter Student Number: ");
-            inputHere();
-            getline(cin, stdInput);
+            if(type == "ADMIN"){
+                header();
+                centerText(windowSize / 2, " ", "Enter Student Number: ");
+                inputHere();
+                getline(cin, stdInput);
+            }else if(type == "STUDENT"){
+                stdInput = studentNum;
+            }
+
             index = getVectorIndex(stdInput, accountsNumber);
             if(index != -1){
                 string msg = "The remaining balance of " + accountsNumber[index] + " is: " + accountBalance[index];
@@ -296,7 +310,10 @@ class AdminState{
             studentNumFile.close();
             amountFile.close();
 
-            adminMenu("BackToMenu");
+            
+            if(type == "ADMIN"){
+                adminMenu("BackToMenu");
+            }
         }
 
         void viewAllAccounts(string type){
